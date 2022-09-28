@@ -68,7 +68,12 @@ struct ContentView: View {
             .padding()
         }
         .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: askQuestion)
+            if(userScore == 8) {
+                Button("Restart", action: restartGame)
+            } else {
+                Button("Continue", action: askQuestion)
+            }
+            
         } message: {
             Text("Your score is \(userScore)")
         }
@@ -76,12 +81,18 @@ struct ContentView: View {
     
     func flagTapped(_ number: Int) {
         if(number == correctAnswer) {
-            scoreTitle = "Correct"
+            scoreTitle = userScore == 7 ? "Congratulations you have successfully completed the question" : "Correct"
+            userScore += 1
         } else {
             scoreTitle = "Wrong! That's the flag of \(countries[number])"
         }
-        
         showingScore = true
+    }
+    
+    func restartGame() {
+        userScore = 0
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
     }
     
     func askQuestion() {
