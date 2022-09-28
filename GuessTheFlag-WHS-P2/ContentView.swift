@@ -22,7 +22,9 @@ struct ContentView: View {
             ], center: .top, startRadius: 200, endRadius: 700)
             .ignoresSafeArea()
             
-            VStack{
+            VStack {
+                Spacer()
+                
                 Text("Guess the flag")
                     .font(.largeTitle.weight(.bold))
                     .foregroundColor(.white)
@@ -30,11 +32,10 @@ struct ContentView: View {
                 VStack(spacing: 15) {
                                 VStack {
                                     Text("Tap the flag of")
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.secondary)
                                         .font(.subheadline.weight(.heavy))
                                     
                                     Text(countries[correctAnswer])
-                                        .foregroundColor(.white)
                                         .font(.largeTitle.weight(.semibold))
                                 }
                                 
@@ -54,7 +55,17 @@ struct ContentView: View {
                             .padding(.vertical, 20)
                             .background(.regularMaterial)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
+                Text("Score: ???")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+                
+                Spacer()
             }
+            .padding()
         }
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
