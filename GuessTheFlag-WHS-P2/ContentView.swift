@@ -15,6 +15,10 @@ struct ContentView: View {
     
     @State private var correctAnswer = Int.random(in: 0...2)
     
+    @State private var rotationAngle = [Double](repeating: 0.0, count: 3)
+    @State private var opacityAmount = [Double](repeating: 1.0, count: 3)
+    @State private var scaleAmount = [Double](repeating: 1.0, count: 3)
+    
     var body: some View {
         ZStack{
             RadialGradient(stops: [.init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
@@ -41,9 +45,19 @@ struct ContentView: View {
                                 ForEach(0..<3){ number in
                                     Button {
                                         flagTapped(number)
+                                        withAnimation {
+                                            rotationAngle[number] += 360
+                                            for button in 0..<3 where button != number {
+                                                opacityAmount[button] = 0.25
+                                                scaleAmount[button] = 0.85
+                                            }
+                                        }
                                     } label: {
                                         FlagImage(image: countries[number])
                                     }
+                                    .opacity(opacityAmount[number])
+                                    .scaleEffect(scaleAmount[number])
+                                    .rotation3DEffect(.degrees(rotationAngle[number]), axis: (x: 0, y: 1, z: 0))
                                 }
                             }
                             .frame(maxWidth: .infinity)
@@ -87,11 +101,17 @@ struct ContentView: View {
     func restartGame() {
         userScore = 0
         countries.shuffle()
+        rotationAngle = [Double](repeating: 0.0, count: 3)
+        opacityAmount = [Double](repeating: 1.0, count: 3)
+        scaleAmount = [Double](repeating: 1.0, count: 3)
         correctAnswer = Int.random(in: 0...2)
     }
     
     func askQuestion() {
         countries.shuffle()
+        rotationAngle = [Double](repeating: 0.0, count: 3)
+        opacityAmount = [Double](repeating: 1.0, count: 3)
+        scaleAmount = [Double](repeating: 1.0, count: 3)
         correctAnswer = Int.random(in: 0...2)
     }
 }
